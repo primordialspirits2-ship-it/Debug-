@@ -1,0 +1,49 @@
+<app-main-layout>
+  <!-- Left Panel: Character Preview -->
+  <div left-panel class="w-full h-full p-4 flex flex-col overflow-y-auto">
+    <div class="flex-shrink-0">
+      <h1 class="font-cinzel text-2xl text-red-600 font-bold text-center tracking-widest mb-4 border-b border-stone-800 pb-2">NIGHTFALL</h1>
+      
+      <!-- Character Section -->
+      <div class="mt-2 text-center">
+        <!-- Portrait Container -->
+        <div class="w-32 h-44 mx-auto p-1 bg-gradient-to-b from-stone-700 to-stone-900 rounded shadow-lg shadow-black/50">
+          <div class="w-full h-full relative rounded-sm shadow-inner shadow-black/80 overflow-hidden bg-stone-900">
+            <img [src]="characterImage()" alt="Character Portrait" class="w-full h-full object-cover">
+            
+            @if (creationService.isGeneratingPortrait()) {
+              <div class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center text-center p-2 z-20">
+                <div class="w-6 h-6 border-2 border-dashed rounded-full animate-spin border-red-500"></div>
+                <p class="mt-2 text-stone-400 font-cinzel text-xs">Summoning...</p>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Character Details -->
+        <div class="mt-4 min-h-[80px] flex flex-col justify-center space-y-1">
+          @if (creationService.characterName()) {
+            <h2 class="text-xl font-cinzel text-white drop-shadow-md truncate px-2">{{ creationService.characterName() }}</h2>
+          }
+          @if (creationService.selectedRace(); as race) {
+            <h3 [class]="'font-cinzel text-stone-300 drop-shadow-md ' + (creationService.characterName() ? 'text-sm' : 'text-lg')">{{ race.name }}</h3>
+          }
+          @if (creationService.selectedClass(); as vClass) {
+            <p class="text-xs text-red-400 uppercase tracking-wide opacity-80">{{ vClass.name }}</p>
+          }
+        </div>
+      </div>
+    </div>
+    
+    <div class="flex-grow"></div>
+
+    <div class="flex-shrink-0 mt-4 text-center text-stone-500 text-xs border-t border-stone-800 pt-3">
+      <p>The embrace awaits.</p>
+    </div>
+  </div>
+
+  <!-- Right Panel: Creation Steps -->
+  <div right-panel class="w-full h-full p-4 sm:p-6 flex flex-col overflow-y-auto">
+    <router-outlet></router-outlet>
+  </div>
+</app-main-layout>

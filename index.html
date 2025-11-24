@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Vampire RPG: Bloodline Creator</title>
+  <base href="/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Lato', sans-serif;
+      /* NEW: Updated background image for a more urban, gothic feel */
+      background: url('https://images.unsplash.com/photo-1489065094455-c2d575ff1645?q=80&w=2572&auto=format&fit=crop') no-repeat center center fixed;
+      background-size: cover;
+      position: relative; /* Needed for the overlay */
+    }
+
+    /* NEW: Adds a vignette effect to darken the edges of the screen, focusing the view */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(ellipse at center, rgba(10, 5, 5, 0.1) 0%, rgba(0, 0, 0, 0.7) 100%);
+      pointer-events: none; /* Allows clicks to pass through */
+    }
+
+    .font-cinzel {
+        font-family: 'Cinzel Decorative', serif;
+    }
+
+    /* Add fade-in animation */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    /* Themed scrollbar for Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: #7f1d1d #1c1917; /* thumb color (red-900), track color (stone-900) */
+
+    /* Custom Scrollbar for Webkit browsers */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1c1917; /* stone-900 */
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #7f1d1d; /* red-900 */
+      border-radius: 5px;
+      border: 1px solid #44403c; /* stone-700 */
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: #b91c1c; /* red-700 */
+    }
+
+    /* NEW: A decorative, glowing border effect for important containers */
+    .ornate-border {
+      border-width: 2px;
+      border-image-slice: 1;
+      border-image-source: linear-gradient(to bottom, #7f1d1d, #44403c);
+      box-shadow: 0 0 15px rgba(220, 38, 38, 0.3);
+    }
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "rxjs": "https://aistudiocdn.com/rxjs@^7.8.2?conditions=es2015",
+    "rxjs/operators": "https://aistudiocdn.com/rxjs@^7.8.2/operators?conditions=es2015",
+    "rxjs/ajax": "https://aistudiocdn.com/rxjs@^7.8.2/ajax?conditions=es2015",
+    "rxjs/webSocket": "https://aistudiocdn.com/rxjs@^7.8.2/webSocket?conditions=es2015",
+    "rxjs/testing": "https://aistudiocdn.com/rxjs@^7.8.2/testing?conditions=es2015",
+    "rxjs/fetch": "https://aistudiocdn.com/rxjs@^7.8.2/fetch?conditions=es2015",
+    "@google/genai": "https://next.esm.sh/@google/genai@^1.29.0?external=rxjs",
+    "@angular/core": "https://next.esm.sh/@angular/core@^20.3.10?external=rxjs",
+    "@angular/compiler": "https://next.esm.sh/@angular/compiler@^20.3.10?external=rxjs",
+    "@angular/common": "https://next.esm.sh/@angular/common@^20.3.10?external=rxjs",
+    "@angular/common/http": "https://next.esm.sh/@angular/common@^20.3.10/http?external=rxjs",
+    "@angular/platform-browser": "https://next.esm.sh/@angular/platform-browser@^20.3.10?external=rxjs",
+    "@angular/core/testing": "https://next.esm.sh/@angular/core@^20.3.10/testing?external=rxjs",
+    "@jest/globals": "https://next.esm.sh/@jest/globals@^30.2.0?external=rxjs",
+    "@angular/router": "https://next.esm.sh/@angular/router@^20.3.11?external=rxjs"
+  }
+}
+</script>
+</head>
+<body class="bg-black text-white">
+  <app-root></app-root>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<div class="animate-fade-in flex flex-col h-full relative">
+  @if(gameState(); as state) {
+    <!-- Game Over Overlay -->
+    @if(state.isGameOver) {
+      <div class="absolute inset-0 bg-black/80 backdrop-blur-sm z-20 flex flex-col items-center justify-center text-center p-8 animate-fade-in rounded-lg">
+        <div class="max-w-md p-6 bg-stone-900 border border-red-900 shadow-2xl shadow-red-900/50">
+          <h2 class="font-cinzel text-3xl text-red-600 mb-2">The Night is Over</h2>
+          <p class="text-stone-300 text-sm mb-6">{{ state.gameOverMessage }}</p>
+          <button (click)="startOver.emit()" class="px-6 py-2 bg-red-900 hover:bg-red-800 text-white rounded font-cinzel text-sm border border-red-700 transition-colors">
+            Begin Anew
+          </button>
+        </div>
+      </div>
+    }
+
+    <!-- Header -->
+    <div class="flex-shrink-0 mb-3 pb-2 border-b border-stone-800">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <h2 class="font-cinzel text-xl text-stone-200">{{ state.location.name }}</h2>
+          <button (click)="viewChronicle.emit()" class="px-2 py-0.5 bg-stone-800 hover:bg-purple-900/30 border border-stone-700 text-purple-300 rounded text-[10px] font-bold uppercase tracking-wider transition-colors">
+            Chronicle
+          </button>
+        </div>
+        <span class="px-2 py-0.5 bg-stone-800 border border-stone-700 text-red-400 rounded text-[10px] font-bold uppercase tracking-wider">{{ state.time }} | Day {{ state.day }}</span>
+      </div>
+      <!-- Mini status bar row for mobile if needed, or keeping it clean since it's on the left -->
+      <div class="flex md:hidden justify-end gap-x-3 mt-2">
+         <app-status-bar label="BLD" [currentValue]="state.blood" [maxValue]="10" color="red" />
+         <app-status-bar label="HUM" [currentValue]="state.humanity" [maxValue]="7" color="blue" />
+         <app-status-bar label="HGR" [currentValue]="state.hunger" [maxValue]="5" color="orange" />
+      </div>
+    </div>
+
+    <!-- Event Log -->
+    <div #eventLogContainer class="flex-grow overflow-y-auto bg-black/20 p-3 rounded border border-stone-800/50 mb-3 shadow-inner shadow-black/50">
+      @for (entry of state.eventLog; track $index) {
+        <p [class]="'mb-1.5 text-xs leading-relaxed ' + (entry.startsWith('>') ? 'text-purple-400/90 italic pl-2 border-l-2 border-purple-900/50' : 'text-stone-400')">{{ entry }}</p>
+      }
+    </div>
+
+    <!-- Bottom Panel: Scene and Actions -->
+    <div class="flex-shrink-0">
+      <!-- Current Scene -->
+      <div class="p-3 bg-stone-900/30 rounded border border-stone-800 min-h-[80px] flex flex-col justify-center mb-3">
+        <div class="text-stone-300 text-sm leading-relaxed">
+          <p class="whitespace-pre-wrap">{{ state.currentEvent }}</p>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div>
+        @if (isProcessingAction()) {
+          <div class="h-[100px] flex flex-col items-center justify-center text-center text-stone-500 text-xs">
+            <div class="w-5 h-5 border-2 border-dashed rounded-full animate-spin border-purple-500 mb-2"></div>
+            <p>Fate is being written...</p>
+          </div>
+        } @else {
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            @for(action of state.availableActions; track action) {
+              <button (click)="actionTaken.emit(action)" 
+                      [class]="'w-full px-3 py-2 text-left sm:text-center border rounded transition-all duration-200 text-xs sm:text-sm font-medium hover:pl-4 sm:hover:pl-3 ' + 
+                               (action.startsWith('Unleash ') 
+                                 ? 'bg-yellow-900/10 border-yellow-700/50 text-yellow-500 hover:bg-yellow-900/20 hover:border-yellow-600' 
+                                 : 'bg-stone-900/40 border-stone-700/50 text-stone-300 hover:bg-stone-800 hover:border-stone-500 hover:text-white')">
+                {{ action }}
+              </button>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

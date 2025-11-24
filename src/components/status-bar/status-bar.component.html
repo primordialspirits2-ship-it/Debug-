@@ -1,0 +1,16 @@
+<div class="flex items-center gap-2" [class.w-full]="size() === 'large'" [class.justify-between]="size() === 'large'">
+  <span class="font-bold tracking-wider uppercase font-cinzel" 
+        [class.text-[10px]]="size() === 'small'"
+        [class.text-xs]="size() === 'large'"
+        [class.text-stone-400]="size() === 'large'"
+        [class.text-red-400]="color() === 'red' && size() === 'small'"
+        [class.text-blue-300]="color() === 'blue' && size() === 'small'"
+        [class.text-orange-400]="color() === 'orange' && size() === 'small'">{{ label() }}</span>
+
+  <div class="flex gap-0.5">
+    @for (segmentClass of segmentClasses(); track $index) {
+      <div [class]="barSizeClass() + ' rounded-[1px] ' + segmentClass">
+      </div>
+    }
+  </div>
+</div>

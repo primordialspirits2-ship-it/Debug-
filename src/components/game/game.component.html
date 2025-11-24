@@ -1,0 +1,103 @@
+<app-main-layout>
+  <!-- Left Panel: Game Status -->
+  <div left-panel class="w-full h-full p-3 sm:p-4 flex flex-col overflow-y-auto scrollbar-hide">
+    <div class="flex-shrink-0">
+      <h1 class="font-cinzel text-xl text-red-600 font-bold text-center tracking-widest mb-3 border-b border-stone-800 pb-2">NIGHTFALL</h1>
+      
+      <!-- Character Section -->
+      <div class="text-center flex flex-row md:flex-col items-center gap-3 md:gap-0">
+        <!-- Portrait Container -->
+        <div class="w-20 h-20 md:w-28 md:h-36 mx-auto flex-shrink-0 p-0.5 bg-gradient-to-b from-stone-600 to-stone-900 rounded shadow-md shadow-black/50">
+          <div class="w-full h-full relative rounded-sm shadow-inner shadow-black/80 overflow-hidden bg-stone-900">
+            <img [src]="characterImage()" alt="Character Portrait" class="w-full h-full object-cover">
+          </div>
+        </div>
+
+        <!-- Character Details -->
+        <div class="flex-grow md:mt-3 md:w-full flex flex-col justify-center text-left md:text-center">
+          @if (character(); as char) {
+            <h2 class="text-lg font-cinzel text-white drop-shadow leading-tight">{{ char.name }}</h2>
+            <div class="flex md:flex-col gap-2 md:gap-0 text-xs md:text-sm text-stone-400 items-baseline md:items-center">
+              <span>{{ char.race.name }}</span>
+              <span class="hidden md:inline text-stone-600">•</span>
+              <span class="text-red-400/80">{{ char.vClass.name }}</span>
+            </div>
+            @if(gameState(); as state) {
+               <p class="text-[10px] text-stone-500 uppercase tracking-widest mt-1">{{ toRoman(state.generation) }}th Gen</p>
+            }
+          }
+        </div>
+      </div>
+    </div>
+    
+    <!-- Game Status Panel -->
+    @if(gameState(); as state) {
+      <div class="flex-grow mt-4 flex flex-col gap-y-2">
+        <!-- Status Bars -->
+        <div class="space-y-2 bg-black/20 p-2 rounded border border-stone-800/50">
+          <app-status-bar label="Blood" [currentValue]="state.blood" [maxValue]="10" color="red" size="large" />
+          <app-status-bar label="Humanity" [currentValue]="state.humanity" [maxValue]="7" color="blue" size="large" />
+          <app-status-bar label="Hunger" [currentValue]="state.hunger" [maxValue]="5" color="orange" size="large" />
+        </div>
+
+        <!-- Resources -->
+        <div class="grid grid-cols-3 divide-x divide-stone-700 bg-black/20 rounded border border-stone-800/50 py-2">
+          <div class="text-center px-1">
+            <div class="text-[10px] text-stone-500 uppercase tracking-wider">Inf</div>
+            <div class="font-bold text-purple-300 text-sm">{{ state.influence }}</div>
+          </div>
+          <div class="text-center px-1">
+            <div class="text-[10px] text-stone-500 uppercase tracking-wider">Herd</div>
+            <div class="font-bold text-green-300 text-sm">{{ state.herdSize }}</div>
+          </div>
+          <div class="text-center px-1">
+            <div class="text-[10px] text-stone-500 uppercase tracking-wider">Feed</div>
+            <div class="font-bold text-stone-300 text-sm">{{ state.feeds }}</div>
+          </div>
+        </div>
+
+        <!-- Attributes -->
+        @if(state.character.attributes; as attrs) {
+          <div class="grid grid-cols-2 gap-x-2 gap-y-1 text-xs bg-black/20 p-2 rounded border border-stone-800/50">
+            <div class="flex justify-between"><span class="text-stone-500">STR</span> <span class="text-stone-300">{{attrs.strength}}</span></div>
+            <div class="flex justify-between"><span class="text-stone-500">DEX</span> <span class="text-stone-300">{{attrs.dexterity}}</span></div>
+            <div class="flex justify-between"><span class="text-stone-500">CHA</span> <span class="text-stone-300">{{attrs.charisma}}</span></div>
+            <div class="flex justify-between"><span class="text-stone-500">FTD</span> <span class="text-stone-300">{{attrs.fortitude}}</span></div>
+            <div class="flex justify-between"><span class="text-stone-500">CEL</span> <span class="text-stone-300">{{attrs.celerity}}</span></div>
+            <div class="flex justify-between"><span class="text-stone-500">DOM</span> <span class="text-stone-300">{{attrs.dominate}}</span></div>
+          </div>
+        }
+
+        <!-- Haven Upgrades -->
+        @if(state.havenUpgrades.length > 0) {
+            <div class="bg-black/20 p-2 rounded border border-stone-800/50">
+                <h4 class="font-cinzel text-center text-stone-500 text-[10px] uppercase mb-1">Haven Upgrades</h4>
+                <div class="flex flex-wrap gap-1 justify-center">
+                    @for(upgrade of state.havenUpgrades; track upgrade) {
+                        <span class="text-[10px] px-1.5 py-0.5 bg-stone-800 text-yellow-500/80 border border-stone-700 rounded">{{ upgrade }}</span>
+                    }
+                </div>
+            </div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Right Panel: Game Dashboard -->
+  <div right-panel class="w-full h-full p-3 sm:p-5 flex flex-col overflow-y-auto">
+    <app-game-dashboard 
+      [gameState]="gameState()"
+      [isProcessingAction]="isProcessingAction()"
+      (actionTaken)="handleAction($event)"
+      (startOver)="startOver()"
+      (viewChronicle)="toggleChronicle(true)"
+    />
+  </div>
+</app-main-layout>
+
+@if(showChronicle() && gameState(); as state) {
+  <app-chronicle-modal 
+    [chronicle]="state.chronicle" 
+    (closeModal)="toggleChronicle(false)" 
+  />
+}

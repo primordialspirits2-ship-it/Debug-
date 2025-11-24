@@ -1,0 +1,22 @@
+<div class="animate-fade-in flex flex-col h-full">
+  <h2 class="flex-shrink-0 font-cinzel text-2xl sm:text-3xl text-center text-stone-200 mb-4">Select Your Kin</h2>
+  
+  <div class="flex-grow overflow-y-auto">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+      @for (race of races; track race.name) {
+        <button (click)="onSelectRace(race)" 
+                [class]="'p-3 bg-black/20 border rounded transition-all duration-300 ' + (selectedRace()?.name === race.name ? 'border-red-500 bg-red-900/10 shadow shadow-red-900/20' : 'border-stone-800 hover:border-red-800 hover:bg-stone-900/50')">
+          <h3 class="font-cinzel text-sm font-bold text-center text-stone-300">{{ race.name }}</h3>
+        </button>
+      }
+    </div>
+    <div class="p-3 bg-stone-900/30 rounded border border-stone-800 flex items-center justify-center min-h-[100px]">
+      <p class="text-stone-400 text-sm leading-relaxed whitespace-pre-wrap text-center">{{ description() }}</p>
+    </div>
+  </div>
+
+  <div class="flex-shrink-0 pt-4 flex justify-between border-t border-stone-800/50 mt-2">
+    <button (click)="navigateBack()" class="px-4 py-1.5 bg-stone-800 border border-stone-600 rounded text-stone-300 text-sm hover:bg-stone-700 transition-colors">Back</button>
+    <button (click)="navigateNext()" [disabled]="!selectedRace()" class="px-4 py-1.5 bg-red-900 border border-red-700 rounded text-white text-sm hover:bg-red-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg shadow-red-900/20">Next</button>
+  </div>
+</div>

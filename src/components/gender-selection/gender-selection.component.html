@@ -1,0 +1,13 @@
+<div class="animate-fade-in flex flex-col justify-center items-center h-full">
+  <h2 class="font-cinzel text-2xl sm:text-3xl text-center mb-6 text-stone-200">Choose Your Form</h2>
+  <div class="flex gap-4">
+    <button (click)="selectGender('Male')" class="group w-32 h-32 flex flex-col items-center justify-center bg-stone-800/30 border border-stone-700 rounded hover:bg-red-900/20 hover:border-red-600 transition-all duration-300 transform hover:scale-105">
+      <svg class="w-10 h-10 text-stone-500 group-hover:text-red-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5m0 14l-4-4m4 4l4-4M5 12h14"></path></svg>
+      <span class="mt-2 text-sm font-cinzel text-stone-400 group-hover:text-white">Male</span>
+    </button>
+    <button (click)="selectGender('Female')" class="group w-32 h-32 flex flex-col items-center justify-center bg-stone-800/30 border border-stone-700 rounded hover:bg-red-900/20 hover:border-red-600 transition-all duration-300 transform hover:scale-105">
+      <svg class="w-10 h-10 text-stone-500 group-hover:text-red-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.5A5.5 5.5 0 116.5 12 5.5 5.5 0 0112 6.5zM12 15v4m-2-2h4"></path></svg>
+      <span class="mt-2 text-sm font-cinzel text-stone-400 group-hover:text-white">Female</span>
+    </button>
+  </div>
+</div>

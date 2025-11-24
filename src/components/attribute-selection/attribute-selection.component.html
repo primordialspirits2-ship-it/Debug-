@@ -1,0 +1,52 @@
+<div class="animate-fade-in flex flex-col h-full">
+  <div class="flex-shrink-0 mb-3">
+    <h2 class="font-cinzel text-2xl sm:text-3xl text-center text-stone-200">Define Your Strengths</h2>
+    <p class="text-center text-stone-500 text-xs mt-1">Distribute 3 points.</p>
+  </div>
+  
+  <div class="flex-grow overflow-y-auto pr-2">
+    @if (isGeneratingAttributes()) {
+      <div class="flex-grow flex flex-col items-center justify-center text-center p-4 min-h-[200px]">
+        <div class="w-8 h-8 border-2 border-dashed rounded-full animate-spin border-red-500"></div>
+        <p class="mt-3 text-stone-400 font-cinzel text-sm">Reading blood...</p>
+      </div>
+    } @else if(baseAttributes()) {
+      <div class="bg-black/20 p-3 rounded border border-stone-800">
+        <div class="space-y-2">
+          @for(attr of attributes; track attr.key) {
+            <div class="grid grid-cols-[1fr,auto] items-center gap-x-3 py-1 border-b border-stone-800/50 last:border-0">
+              <div>
+                <span class="text-sm font-bold text-stone-300 block">{{ attr.name }}</span>
+                <span class="text-[10px] text-stone-500 italic block -mt-0.5 truncate max-w-[180px]">{{ attr.description }}</span>
+              </div>
+              <div class="flex items-center gap-x-2">
+                <button (click)="changeAttribute(attr, -1)" [disabled]="!canDecrease(attr)" class="w-6 h-6 flex items-center justify-center bg-stone-800 border border-stone-600 rounded text-white text-sm hover:bg-stone-700 disabled:opacity-30">-</button>
+                <span class="w-4 text-center text-sm font-bold text-white">{{ attr.value() }}</span>
+                <button (click)="changeAttribute(attr, 1)" [disabled]="!canIncrease(attr.value())" class="w-6 h-6 flex items-center justify-center bg-stone-800 border border-stone-600 rounded text-white text-sm hover:bg-stone-700 disabled:opacity-30">+</button>
+              </div>
+            </div>
+          }
+        </div>
+        <div class="mt-3 flex justify-between items-center border-t border-stone-800 pt-2">
+          <p class="text-sm text-stone-400">Points: <span class="font-bold text-red-500">{{ availablePoints() - spentPoints() }}</span></p>
+          <button (click)="onRegenerate()" class="text-xs text-purple-400 hover:text-purple-300 underline">Re-roll Base</button>
+        </div>
+      </div>
+      
+      <!-- Name Selection -->
+      <div class="mt-4">
+        <h2 class="font-cinzel text-xl text-center mb-2 text-stone-300">Identity</h2>
+        <input type="text" 
+                 [value]="characterName()" 
+                 (input)="onNameInput($event)"
+                 placeholder="Name your character..."
+                 class="w-full px-3 py-2 bg-stone-900/70 border border-stone-700 rounded text-white text-center text-sm focus:border-red-500 outline-none transition-all">
+      </div>
+    }
+  </div>
+
+  <div class="flex-shrink-0 pt-4 flex justify-between border-t border-stone-800/50 mt-2">
+    <button (click)="navigateBack()" class="px-4 py-1.5 bg-stone-800 border border-stone-600 rounded text-stone-300 text-sm hover:bg-stone-700 transition-colors">Back</button>
+    <button (click)="navigateNext()" [disabled]="!baseAttributes() || !characterName().trim()" class="px-4 py-1.5 bg-red-900 border border-red-700 rounded text-white text-sm hover:bg-red-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg shadow-red-900/20">Finish</button>
+  </div>
+</div>

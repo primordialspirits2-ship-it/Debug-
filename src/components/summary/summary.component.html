@@ -1,0 +1,66 @@
+<div class="animate-fade-in flex flex-col h-full text-center">
+  <div class="flex-grow overflow-y-auto py-2 px-2">
+    <h2 class="font-cinzel text-2xl text-red-500 mb-2">Bloodline Chosen</h2>
+    @if (gender() && race() && vClass()) {
+      <p class="text-sm text-stone-400 mb-4 px-4">
+        @if(characterName()) {
+          <span><span class="text-white font-bold">{{ characterName() }}</span>, {{ gender() }} {{ race()!.name }} {{ vClass()!.name }}.</span>
+        }
+      </p>
+    }
+    
+    @if(attributes(); as attrs) {
+      <div class="mb-4 p-2 bg-black/20 rounded border border-stone-800 max-w-xs mx-auto">
+          <div class="grid grid-cols-3 gap-x-2 gap-y-1 text-xs">
+              <span class="text-stone-500">STR: <span class="text-stone-300">{{attrs.strength}}</span></span>
+              <span class="text-stone-500">DEX: <span class="text-stone-300">{{attrs.dexterity}}</span></span>
+              <span class="text-stone-500">CHA: <span class="text-stone-300">{{attrs.charisma}}</span></span>
+              <span class="text-stone-500">FTD: <span class="text-stone-300">{{attrs.fortitude}}</span></span>
+              <span class="text-stone-500">CEL: <span class="text-stone-300">{{attrs.celerity}}</span></span>
+              <span class="text-stone-500">DOM: <span class="text-stone-300">{{attrs.dominate}}</span></span>
+          </div>
+      </div>
+    }
+
+    <p class="text-xs text-stone-500 mb-4 max-w-sm mx-auto italic">
+      The eternal night awaits.
+    </p>
+
+    @if(portraitError(); as error) {
+      <div class="mb-2 p-2 bg-red-900/30 border border-red-800 rounded text-red-300 text-xs max-w-xs mx-auto">
+        <p>{{ error }}</p>
+      </div>
+    }
+  </div>
+
+  <!-- Fixed buttons at the bottom -->
+  <div class="flex-shrink-0 py-2 border-t border-stone-800/50">
+    <div class="flex flex-col gap-2 max-w-xs mx-auto">
+      
+      <button (click)="generatePortrait()"
+              [disabled]="isGeneratingPortrait()"
+              class="w-full px-4 py-2 bg-purple-900/80 border border-purple-700 rounded text-white text-sm hover:bg-purple-800 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed">
+        @if (isGeneratingPortrait()) {
+          <div class="w-4 h-4 border-2 border-dashed rounded-full animate-spin border-white mr-2"></div>
+          <span>Summoning...</span>
+        } @else {
+          @if (generatedPortraitUrl()) {
+            <span>Regenerate Portrait</span>
+          } @else {
+            <span>Generate Portrait</span>
+          }
+        }
+      </button>
+
+      <div class="flex gap-2">
+        <button (click)="rebirth()" class="flex-1 px-4 py-2 bg-stone-800 border border-stone-600 rounded text-stone-300 text-sm hover:bg-stone-700">Rebirth</button>
+        <button (click)="beginJourney()" 
+                [disabled]="!generatedPortraitUrl()"
+                class="flex-1 px-4 py-2 bg-red-900 border border-red-700 rounded text-white text-sm hover:bg-red-800 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-red-900/20">Enter</button>
+      </div>
+    </div>
+    @if (!generatedPortraitUrl()) {
+      <p class="text-[10px] text-stone-600 mt-2">Portrait required.</p>
+    }
+  </div>
+</div>
